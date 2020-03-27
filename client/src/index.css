@@ -1,0 +1,116 @@
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.nav-item > svg {
+  color: white;
+  cursor: pointer;
+}
+
+.current > svg{
+  color: lime;
+}
+
+.nav-item > svg:hover {
+  transition: opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+.nav-item > svg {
+  transition: opacity 0.2s ease;
+  opacity: 1;
+}
+
+.nav-item {
+  cursor: default;
+}
+
+.flex {
+  flex: 1;
+}
+
+.newsStory:hover {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.newsStory {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.messageInput::placeholder {
+  color: gray;
+}
+
+.messageInputContainer {
+  background-color: lightgray;
+}
+
+.chatMessage {
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.chatMessage:hover {
+  -webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+  -moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.smLoginButton {
+  opacity: 1;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 3px 1px #0000000f;
+  transition: opacity 0.5s ease;
+}
+
+.smLoginButton:hover {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.boxShadow {
+  box-shadow: 0px 10px 25px 5px #0000000f;
+}
+
+.offWhiteBackground {
+  background: #f9f9f9 !important;
+}
+
+.dropzone {
+  border: dashed 3px lightgray;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropzone:hover {
+  border-color: gray;
+}
