@@ -14,7 +14,7 @@ function Chat(props) {
 
   useEffect(() => {
     document.title = "Chat | COVInfo";
-    const socket = openSocket("http://localhost:4000");
+    const socket = openSocket(process.env.REACT_APP_DOMAIN);
     socket.on("message", (msg) => {
       setMessages([...messages, msg]);
       scrollToBottom();
@@ -31,7 +31,7 @@ function Chat(props) {
   let sendMessage = () => {
     fetch(
       encodeURI(
-        `https://covinfo.tech/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}`
+        `${process.env.REACT_APP_DOMAIN}/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}`
       ),
       { method: "POST" }
     )

@@ -17,7 +17,7 @@ function App() {
   return (
     <Provider store={rootStore}>
       <ToastProvider autoDismissTimeout={3000}>
-        <Router basename={"https://covinfo.codingcomp.wtf"}>
+        <Router basename={process.env.REACT_APP_DOMAIN}>
           <div className="d-flex flex-row h-100">
             <Navbar />
             <Switch>
