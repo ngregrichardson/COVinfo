@@ -2600,7 +2600,7 @@
             { autoDismissTimeout: 3e3 },
             r.a.createElement(
               E.a,
-              null,
+              { basename: "https://covinfo.codingcomp.wtf" },
               r.a.createElement(
                 "div",
                 { className: "d-flex flex-row h-100" },
@@ -2713,4 +2713,4 @@
   },
   [[267, 1, 2]],
 ]);
-//# sourceMappingURL=main.2c846d1d.chunk.js.map
+//# sourceMappingURL=main.a04ce41f.chunk.js.map
