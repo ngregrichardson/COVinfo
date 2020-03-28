@@ -15,6 +15,7 @@ import { Button, Modal, Dropdown, ProgressBar } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 import Dropzone from "react-dropzone";
 import Masonry from "react-masonry-component";
+import { useToasts } from "react-toast-notifications";
 
 function Memes(props) {
   const [memes, setMemes] = useState([]);
@@ -28,6 +29,7 @@ function Memes(props) {
   const [uploadingProgress, setUploadingProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const widthRef = useRef(null);
+  const { addToast } = useToasts();
 
   let loadMemes = () => {
     firebase
@@ -40,6 +42,13 @@ function Memes(props) {
         setMemes(sortMemes(temp));
         setLoading(false);
         setForceUpdate(!forceUpdate);
+      })
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem loading the memes.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
       });
   };
 
@@ -52,6 +61,10 @@ function Memes(props) {
       setSortType(type);
       setMemes(sortMemes(memes, type));
       setForceUpdate(!forceUpdate);
+      addToast(`Filtering by ${type}.`, {
+        appearance: "success",
+        autoDismiss: true,
+      });
     }
   };
 
@@ -97,7 +110,13 @@ function Memes(props) {
               );
               setUploadingProgress(progress);
             },
-            (e) => console.log(e),
+            (e) => {
+              console.log(e);
+              addToast("There was a problem adding the meme.", {
+                appearance: "error",
+                autoDismiss: true,
+              });
+            },
             () => {
               firebase
                 .storage()
@@ -118,11 +137,35 @@ function Memes(props) {
                       setMemes(sortMemes(temp));
                       setUploading(false);
                       closeAddMemeModal();
+                      addToast("Meme added.", {
+                        appearance: "success",
+                        autoDismiss: true,
+                      });
                     })
-                    .catch((e) => console.log(e));
+                    .catch((e) => {
+                      console.log(e);
+                      addToast("There was a problem adding the meme.", {
+                        appearance: "error",
+                        autoDismiss: true,
+                      });
+                    });
+                })
+                .catch((e) => {
+                  console.log(e);
+                  addToast("There was a problem adding the meme.", {
+                    appearance: "error",
+                    autoDismiss: true,
+                  });
                 });
             }
           );
+        })
+        .catch((e) => {
+          console.log(e);
+          addToast("There was a problem adding the meme.", {
+            appearance: "error",
+            autoDismiss: true,
+          });
         });
     }
   };
@@ -150,8 +193,18 @@ function Memes(props) {
       .then(() => {
         setMemes(sortMemes(temp));
         setForceUpdate(!forceUpdate);
+        addToast("Upvote toggled.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem toggling the upvote.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   let deleteMeme = (meme_id) => {
@@ -171,7 +224,25 @@ function Memes(props) {
                 sortMemes(memes.filter((meme) => meme.meme_id !== meme_id))
               );
               setForceUpdate(!forceUpdate);
+              addToast("The meme was deleted.", {
+                appearance: "success",
+                autoDismiss: true,
+              });
+            })
+            .catch((e) => {
+              console.log(e);
+              addToast("There was a problem deleting the meme.", {
+                appearance: "error",
+                autoDismiss: true,
+              });
             });
+        })
+        .catch((e) => {
+          console.log(e);
+          addToast("There was a problem deleting the meme.", {
+            appearance: "error",
+            autoDismiss: true,
+          });
         });
     }
   };
@@ -262,8 +333,12 @@ function Memes(props) {
       </Modal>
       <h3 className="px-3 pt-3">Coronavirus Memes</h3>
       <div className="d-flex flex-row align-items-center justify-content-between mb-3 px-3">
-        <Button variant="success" onClick={() => setAddMemeModalVisible(true)}>
-          + Add Meme
+        <Button
+          variant="success"
+          onClick={() => setAddMemeModalVisible(true)}
+          disabled={!props.authed}
+        >
+          {props.authed ? "+ Add Meme" : "Login to add memes"}
         </Button>
         <Dropdown>
           <Dropdown.Toggle variant="light">
@@ -335,33 +410,34 @@ function Memes(props) {
                         {meme.user.username}
                       </span>
                     </div>
-                    {props.authed ? (
-                      <div className="d-flex flex-row align-items-center">
-                        {props.user.type === "admin" ? (
-                          <button
-                            className="bg-transparent border-0"
-                            onClick={() => deleteMeme(meme.meme_id)}
-                          >
-                            <Trash className="text-danger" />
-                          </button>
-                        ) : null}
-                        <span>({meme.upvotes.length})</span>
+                    <div className="d-flex flex-row align-items-center">
+                      {props.authed && props.user.type === "admin" ? (
                         <button
                           className="bg-transparent border-0"
-                          onClick={() => toggleUpvote(meme.meme_id)}
+                          onClick={() => deleteMeme(meme.meme_id)}
                         >
-                          <ThumbsUp
-                            color={
-                              meme.upvotes.includes(props.user.user_id)
-                                ? "gold"
-                                : "black"
-                            }
-                          />
+                          <Trash className="text-danger" />
                         </button>
-                      </div>
-                    ) : (
-                      <div />
-                    )}
+                      ) : null}
+                      <span>({meme.upvotes.length})</span>
+                      <button
+                        className="bg-transparent border-0"
+                        onClick={() => toggleUpvote(meme.meme_id)}
+                        disabled={!props.authed}
+                        title={
+                          !props.authed ? "Login to enable upvoting" : null
+                        }
+                      >
+                        <ThumbsUp
+                          color={
+                            props.authed &&
+                            meme.upvotes.includes(props.user.user_id)
+                              ? "gold"
+                              : "black"
+                          }
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

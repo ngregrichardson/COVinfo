@@ -8,6 +8,7 @@ import {
   Music,
   Image,
   Settings,
+    LogIn
 } from "react-feather";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
@@ -66,13 +67,19 @@ function NavBar(props) {
             <ShoppingCart size={35} />
           </NavLink>
           <div className="flex" />
-          <NavLink
-            to={"/settings"}
-            activeClassName={"current"}
-            className="text-center py-3 w-100 nav-item"
+          {props.authed ? <NavLink
+              to={"/settings"}
+              activeClassName={"current"}
+              className="text-center py-3 w-100 nav-item"
           >
             <Settings size={35} />
-          </NavLink>
+          </NavLink> : <NavLink
+              to={"/login"}
+              activeClassName={"current"}
+              className="text-center py-3 w-100 nav-item"
+          >
+            <LogIn size={35} />
+          </NavLink>}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

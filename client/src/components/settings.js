@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import firebase from "firebase";
 import { TwitterPicker } from "react-color";
 import HashLoader from "react-spinners/HashLoader";
+import { LogOut } from "react-feather";
+import { useHistory } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 
 function Settings(props) {
   const [username, setUsername] = useState(
@@ -18,6 +21,8 @@ function Settings(props) {
   const [colorPicker, setColorPicker] = useState(false);
   const [loading, setLoading] = useState(true);
   const countries = getData();
+  const history = useHistory();
+  const { addToast } = useToasts();
 
   useEffect(() => {
     if (props.user) {
@@ -43,8 +48,18 @@ function Settings(props) {
       .then(() => {
         props.updateUser({ ...props.user, ...updatedValues });
         setUpdatedValues({});
+        addToast("User saved.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem saving the user.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   let handleUpdateValue = (key, value) => {
@@ -55,6 +70,26 @@ function Settings(props) {
 
   let toggleColorPicker = () => {
     setColorPicker(!colorPicker);
+  };
+
+  let handleLogOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        history.push("/");
+        addToast("Logged out.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem logging out.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   return (
@@ -161,11 +196,19 @@ function Settings(props) {
           </Form.Group>
         </Form>
         <button
-          className="bg-white smLoginButton rounded-pill w-25 py-2"
+          className={`bg-white smLoginButton rounded-pill w-25 py-2 ${
+            Object.keys(updatedValues).length === 0 ? "fullButton" : ""
+          }`}
           onClick={handleSaveUser}
           disabled={Object.keys(updatedValues).length === 0}
         >
           Save User
+        </button>
+        <button
+          className="bg-white smLoginButton rounded-pill w-25 py-2 text-danger mt-2"
+          onClick={handleLogOut}
+        >
+          <LogOut /> Log Out
         </button>
       </div>
     </div>

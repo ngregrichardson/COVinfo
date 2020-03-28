@@ -8,7 +8,6 @@ import {
   ThumbsUp,
   UploadCloud,
   Filter,
-  BarChart,
   Clock,
   Trash,
 } from "react-feather";
@@ -17,6 +16,7 @@ import HashLoader from "react-spinners/HashLoader";
 import { Button, Form, Modal, Dropdown } from "react-bootstrap";
 import InputMask from "react-input-mask";
 import { Scrollbars } from "react-custom-scrollbars";
+import { useToasts } from "react-toast-notifications";
 
 function Music(props) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +28,7 @@ function Music(props) {
   const [selectedSong, setSelectedSong] = useState(null);
   const [timestamp, setTimestamp] = useState("00:00:00");
   const [sortType, setSortType] = useState("popular");
+  const { addToast } = useToasts();
 
   let loadSongs = () => {
     firebase
@@ -40,6 +41,13 @@ function Music(props) {
         setSongs(sortSongs(temp));
         setLoading(false);
         setForceUpdate(!forceUpdate);
+      })
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem loading the songs.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
       });
   };
 
@@ -53,6 +61,10 @@ function Music(props) {
       setSortType(type);
       setSongs(sortSongs(songs, type));
       setForceUpdate(!forceUpdate);
+      addToast(`Filtering by ${type}.`, {
+        appearance: "success",
+        autoDismiss: true,
+      });
     }
   };
 
@@ -97,8 +109,25 @@ function Music(props) {
               setSongs(sortSongs(temp));
               setSearchTerm("");
               closeAddSongModal();
+              addToast("Song added.", {
+                appearance: "success",
+                autoDismiss: true,
+              });
             })
-            .catch((e) => console.log(e));
+            .catch((e) => {
+              console.log(e);
+              addToast("There was a problem adding the song.", {
+                appearance: "error",
+                autoDismiss: true,
+              });
+            });
+        })
+        .catch((e) => {
+          console.log(e);
+          addToast("There was a problem adding the song.", {
+            appearance: "error",
+            autoDismiss: true,
+          });
         });
     }
   };
@@ -116,7 +145,13 @@ function Music(props) {
           setSearchedSongs(songs);
           setAddSongModalVisible(true);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          addToast("There was a problem searching YouTube.", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+        });
     } else {
       setSearchedSongs([]);
     }
@@ -165,8 +200,18 @@ function Music(props) {
       .then(() => {
         setSongs(sortSongs(temp));
         setForceUpdate(!forceUpdate);
+        addToast("Upvote toggled.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem toggling the upvote.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   let deleteSong = (song_id) => {
@@ -179,6 +224,17 @@ function Music(props) {
         .then(() => {
           setSongs(sortSongs(songs.filter((song) => song.song_id !== song_id)));
           setForceUpdate(!forceUpdate);
+          addToast("The song was deleted.", {
+            appearance: "success",
+            autoDismiss: true,
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+          addToast("There was a problem deleting the song.", {
+            appearance: "error",
+            autoDismiss: true,
+          });
         });
     }
   };
@@ -249,8 +305,13 @@ function Music(props) {
           <input
             type={"text"}
             className="flex bg-transparent border-0 py-2 px-3 messageInput"
-            placeholder="Add song from YouTube..."
+            placeholder={
+              props.authed
+                ? "Add song from YouTube..."
+                : "Login to enable adding songs..."
+            }
             onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={!props.authed}
             onKeyDown={_handleKeyPress}
             value={searchTerm}
           />
@@ -336,33 +397,32 @@ function Music(props) {
                       {song.user.username}
                     </span>
                   </div>
-                  {props.authed ? (
-                    <div className="d-flex flex-row align-items-center">
-                      {props.user.type === "admin" ? (
-                        <button
-                          className="bg-transparent border-0"
-                          onClick={() => deleteSong(song.song_id)}
-                        >
-                          <Trash className="text-danger" />
-                        </button>
-                      ) : null}
-                      <span>({song.upvotes.length})</span>
+                  <div className="d-flex flex-row align-items-center">
+                    {props.authed && props.user.type === "admin" ? (
                       <button
                         className="bg-transparent border-0"
-                        onClick={() => toggleUpvote(song.song_id)}
+                        onClick={() => deleteSong(song.song_id)}
                       >
-                        <ThumbsUp
-                          color={
-                            song.upvotes.includes(props.user.user_id)
-                              ? "gold"
-                              : "black"
-                          }
-                        />
+                        <Trash className="text-danger" />
                       </button>
-                    </div>
-                  ) : (
-                    <div />
-                  )}
+                    ) : null}
+                    <span>({song.upvotes.length})</span>
+                    <button
+                      className="bg-transparent border-0"
+                      onClick={() => toggleUpvote(song.song_id)}
+                      disabled={!props.authed}
+                      title={!props.authed ? "Login to enable upvoting" : null}
+                    >
+                      <ThumbsUp
+                        color={
+                          props.authed &&
+                          song.upvotes.includes(props.user.user_id)
+                            ? "gold"
+                            : "black"
+                        }
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

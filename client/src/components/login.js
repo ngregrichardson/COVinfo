@@ -3,12 +3,13 @@ import firebase from "firebase";
 import { Facebook, GitHub } from "react-feather";
 import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  let history = useHistory();
+  const history = useHistory();
+  const { addToast } = useToasts();
 
   let handleLoginWithEmail = () => {
     firebase
@@ -16,8 +17,18 @@ function Login() {
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
         history.push("/");
+        addToast("Logged in.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem logging in.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   let handleLoginWithFacebook = () => {
@@ -27,8 +38,18 @@ function Login() {
       .then()
       .then((user) => {
         history.push("/");
+        addToast("Logged in.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem logging in.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   let handleLoginWithGithub = () => {
@@ -38,8 +59,18 @@ function Login() {
       .then()
       .then((user) => {
         history.push("/");
+        addToast("Logged in.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem logging in.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   return (

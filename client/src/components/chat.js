@@ -4,11 +4,13 @@ import { Scrollbars } from "react-custom-scrollbars";
 import ChatMessage from "./chatMessage";
 import openSocket from "socket.io-client";
 import { connect } from "react-redux";
+import { useToasts } from "react-toast-notifications";
 
 function Chat(props) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const scrollBar = useRef(null);
+  const { addToast } = useToasts();
 
   useEffect(() => {
     document.title = "Chat | COVInfo";
@@ -37,7 +39,11 @@ function Chat(props) {
         setMessage("");
       })
       .catch((e) => {
-        console.log(e); // TODO handle error
+        console.log(e);
+        addToast("There was a problem sending the message.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
       });
   };
 
@@ -49,10 +55,10 @@ function Chat(props) {
 
   return (
     <div className="w-100 h-100 d-flex flex-column">
-      <div className="flex pl-3 pt-3 pr-3">
+      <div className="flex pl-3 pt-3 pr-3 d-flex flex-column">
         <h3>Quarantine Chat</h3>
         <Scrollbars
-          renderView={(props) => <div {...props} className="pr-3" />}
+          renderView={(props) => <div {...props} className="pr-3 flex" />}
           ref={scrollBar}
         >
           {messages.map((msg) => (
@@ -68,10 +74,13 @@ function Chat(props) {
           <input
             type={"text"}
             className="flex bg-transparent border-0 py-2 px-3 messageInput"
-            placeholder="Message..."
+            placeholder={
+              props.authed ? "Message..." : "Login to enable chat..."
+            }
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={_handleKeyPress}
             value={message}
+            disabled={!props.authed}
           />
           {message.trim() !== "" ? (
             <button

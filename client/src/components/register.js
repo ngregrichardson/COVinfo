@@ -4,6 +4,7 @@ import { Facebook, GitHub } from "react-feather";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { getData } from "country-list";
+import { useToasts } from "react-toast-notifications";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ function Register() {
   const [username, setUsername] = useState("");
   const [country, setCountry] = useState("US");
   const countries = getData();
+  const { addToast } = useToasts();
 
   let history = useHistory();
 
@@ -23,6 +25,17 @@ function Register() {
       .set({ username, country, username_color: "000000", user_id: uid })
       .then(() => {
         history.push("/");
+        addToast("User created.", {
+          appearance: "success",
+          autoDismiss: true,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem creating the user.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
       });
   };
 
@@ -34,7 +47,13 @@ function Register() {
         .then((user) => {
           createUserData(user.user.uid);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          addToast("There was a problem creating the user.", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+        });
     }
   };
 
@@ -46,7 +65,13 @@ function Register() {
       .then((user) => {
         createUserData(user.user.uid);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem creating the user.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   let handleLoginWithGithub = () => {
@@ -57,7 +82,13 @@ function Register() {
       .then((user) => {
         createUserData(user.user.uid);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        addToast("There was a problem creating the user.", {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      });
   };
 
   return (
