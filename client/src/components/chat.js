@@ -31,7 +31,7 @@ function Chat(props) {
   let sendMessage = () => {
     fetch(
       encodeURI(
-        `http://localhost:4000/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}`
+        `https://covinfo.tech/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}`
       ),
       { method: "POST" }
     )
