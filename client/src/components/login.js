@@ -11,6 +11,10 @@ function Login() {
   const history = useHistory();
   const { addToast } = useToasts();
 
+  let handleNavigateToRegister = () => {
+    history.push("/register");
+  };
+
   let handleLoginWithEmail = () => {
     firebase
       .auth()
@@ -75,7 +79,7 @@ function Login() {
 
   return (
     <div className="w-100 h-100 d-flex align-items-center justify-content-center offWhiteBackground">
-      <div className="bg-white d-flex flex-column align-items-center p-5 rounded boxShadow">
+      <div className="bg-white d-flex flex-column align-items-center form-padding rounded boxShadow">
         <h3>Log in</h3>
         <div style={{ height: 1, width: "25%", backgroundColor: "gray" }} />
         <div className="d-flex flex-row align-items-center justify-content-center p-3">
@@ -92,7 +96,7 @@ function Login() {
             <GitHub />
           </button>
         </div>
-        <span className="mb-2">or use your email</span>
+        <span className="mb-2 text-muted">or use your email</span>
         <Form>
           <Form.Group controlId="formGroupEmail">
             <Form.Label>Email address</Form.Label>
@@ -117,10 +121,16 @@ function Login() {
           </button>
         </Form>
         <button
-          className="bg-white smLoginButton rounded-pill w-25 py-2"
+          className="bg-white smLoginButton rounded-pill py-2 px-3"
           onClick={handleLoginWithEmail}
         >
           Log in
+        </button>
+        <button
+          className="bg-white smLoginButton rounded-pill py-2 px-3 mt-3"
+          onClick={handleNavigateToRegister}
+        >
+          Register
         </button>
       </div>
     </div>

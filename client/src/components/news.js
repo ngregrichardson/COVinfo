@@ -1,57 +1,50 @@
 import React, { Component } from "react";
 import moment from "moment";
-import { geolocated } from "react-geolocated";
-import Geocode from "react-geocode";
 import HashLoader from "react-spinners/HashLoader";
 import NewsStory from "./newsStory";
 import { Scrollbars } from "react-custom-scrollbars";
+import {connect} from 'react-redux';
+import { getName } from "country-list";
+
+
 class News extends Component {
   state = {
     global: { articles: [], loading: true },
-    local: { articles: [], loading: true },
+    local: { articles: [], loading: true, title: 'Local Coronavirus News' },
     coords: { latitude: null, longitude: null },
   };
 
+  componentDidUpdate(oldProps) {
+    const newProps = this.props;
+    if(oldProps.authed !== newProps.authed) {
+      this.setState({local: {...this.state.local, loading: true}})
+      this.getLocalNews();
+    }
+  }
+
+  getLocalNews = () => {
+    if (this.props.authed) {
+      this.handleGetNews(this.props.user.country).then((articles) => {
+        this.setState({
+          local: { articles, loading: false, title: `Local Coronavirus News (${this.props.user.country})` },
+        });
+      });
+    }
+  };
+
   componentDidMount() {
-    document.title = "Dashboard | COVInfo";
+    document.title = "Dashboard | COVinfo";
     this.handleGetNews().then((articles) => {
       this.setState({
         global: { articles, loading: false },
       });
     });
-    if (this.props.isGeolocationAvailable && this.props.isGeolocationEnabled) {
-      this.handleGetNews().then((articles) => {
-        setTimeout(() => {
-          let { coords } = this.props;
-          if (coords !== null) {
-            Geocode.fromLatLng(coords.latitude, coords.longitude).then(
-              (response) => {
-                const state = response.results[0].address_components.filter(
-                  (add) => add.types.includes("administrative_area_level_1")
-                )[0].long_name;
-                this.handleGetNews(state).then((articles) => {
-                  this.setState({
-                    local: { articles, loading: false },
-                  });
-                });
-              },
-              (error) => {
-                console.error(error);
-              }
-            );
-
-            this.setState({
-              local: { articles, loading: false },
-            });
-          }
-        }, 1000);
-      });
-    }
+    this.getLocalNews();
   }
 
   handleGetNews = (term = "") => {
     return new Promise((res, rej) => {
-      term = " " + term;
+      term = " " + getName(term);
       fetch(
         `http://newsapi.org/v2/everything?q=coronavirus${term}&from=${moment()
           .subtract(14, "days")
@@ -79,7 +72,7 @@ class News extends Component {
       <div className="d-flex flex-column flex p-3">
         <div className="d-flex flex-row">
           <h3 className="flex ml-2">Global Coronavirus News</h3>
-          <h3 className="flex ml-2">Local Coronavirus News</h3>
+          <h3 className="flex ml-2">{local.title}</h3>
         </div>
         <div className="d-flex flex-row flex">
           <div
@@ -103,7 +96,7 @@ class News extends Component {
                 this.state.global.articles.map((article) => {
                   if (article.title && article.title.trim() !== "") {
                     return (
-                      <NewsStory article={article} key={article.publishedAt} />
+                      <NewsStory article={article} key={article.publishedAt + article.title + `${Math.random() * 5}`} />
                     );
                   }
                   return null;
@@ -132,7 +125,7 @@ class News extends Component {
                 this.state.local.articles.map((article) => {
                   if (article.title && article.title.trim() !== "") {
                     return (
-                      <NewsStory article={article} key={article.publishedAt} />
+                      <NewsStory article={article} key={article.publishedAt + article.title + `${Math.random() * 5}`} />
                     );
                   }
                   return null;
@@ -146,9 +139,8 @@ class News extends Component {
   }
 }
 
-export default geolocated({
-  positionOptions: {
-    enableHighAccuracy: false,
-  },
-  userDecisionTimeout: null,
-})(News);
+let mapStateToProps = (state, ownProps) => {
+  return{...ownProps, user: state.user, authed: state.authed}
+};
+
+export default connect(mapStateToProps)(News);

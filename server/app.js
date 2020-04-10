@@ -4,7 +4,7 @@ const cors = require("cors");
 const socket = require("socket.io");
 const path = require("path");
 
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 7398;
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -21,7 +21,7 @@ app.get("*", (req, res) => {
 
 app.post("/chat/sendMessage", (req, res) => {
   let params = req.query;
-  if (!params.username || !params.message || !params.username_color) {
+  if (!params.username || !params.message || !params.username_color || !params.country) {
     return res.send({ statusCode: 401, message: "Bad params." }).status(401);
   }
   io.emit("message", params);

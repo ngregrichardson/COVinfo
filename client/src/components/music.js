@@ -17,6 +17,7 @@ import { Button, Form, Modal, Dropdown } from "react-bootstrap";
 import InputMask from "react-input-mask";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useToasts } from "react-toast-notifications";
+import ReactCountryFlag from "react-country-flag";
 
 function Music(props) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,7 +53,7 @@ function Music(props) {
   };
 
   useEffect(() => {
-    document.title = "Music | COVInfo";
+    document.title = "Music | COVinfo";
     loadSongs();
   }, []);
 
@@ -396,6 +397,7 @@ function Music(props) {
                     <span style={{ color: `#${song.user.username_color}` }}>
                       {song.user.username}
                     </span>
+                    <ReactCountryFlag countryCode={song.user.country} svg className="rounded ml-1"/>
                   </div>
                   <div className="d-flex flex-row align-items-center">
                     {props.authed && props.user.type === "admin" ? (

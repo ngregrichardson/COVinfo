@@ -75,7 +75,7 @@
       return Object.prototype.hasOwnProperty.call(e, r);
     }),
     (f.p = "/");
-  var l = (this.webpackJsonpCOVInfo = this.webpackJsonpCOVInfo || []),
+  var l = (this.webpackJsonpCOVinfo = this.webpackJsonpCOVinfo || []),
     i = l.push.bind(l);
   (l.push = r), (l = l.slice());
   for (var a = 0; a < l.length; a++) r(l[a]);

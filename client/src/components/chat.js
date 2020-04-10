@@ -5,22 +5,29 @@ import ChatMessage from "./chatMessage";
 import openSocket from "socket.io-client";
 import { connect } from "react-redux";
 import { useToasts } from "react-toast-notifications";
+const socket = openSocket(process.env.REACT_APP_DOMAIN);
 
 function Chat(props) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const messagesRef = useRef(messages);
   const scrollBar = useRef(null);
   const { addToast } = useToasts();
 
   useEffect(() => {
-    document.title = "Chat | COVInfo";
-    const socket = openSocket(process.env.REACT_APP_DOMAIN);
-    socket.on("message", (msg) => {
-      setMessages([...messages, msg]);
-      scrollToBottom();
-    });
-    return function cleanup() {
-      socket.disconnect();
+    messagesRef.current = messages;
+  });
+
+  let receiveMessage = (msg) => {
+    setMessages([...messagesRef.current, msg]);
+    scrollToBottom();
+  };
+
+  useEffect(() => {
+    document.title = "Chat | COVinfo";
+    socket.on("message", receiveMessage);
+    return () => {
+      socket.off("message");
     };
   }, []);
 
@@ -29,9 +36,12 @@ function Chat(props) {
   };
 
   let sendMessage = () => {
+    console.log(encodeURI(
+        `${process.env.REACT_APP_DOMAIN}/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}&country=${props.user.country}`
+    ));
     fetch(
       encodeURI(
-        `${process.env.REACT_APP_DOMAIN}/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}`
+        `${process.env.REACT_APP_DOMAIN}/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}&country=${props.user.country}`
       ),
       { method: "POST" }
     )

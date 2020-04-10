@@ -1,5 +1,5 @@
 /*! For license information please see 2.a29603d1.chunk.js.LICENSE.txt */
-(this.webpackJsonpCOVInfo = this.webpackJsonpCOVInfo || []).push([
+(this.webpackJsonpCOVinfo = this.webpackJsonpCOVinfo || []).push([
   [2],
   [
     function (e, t, n) {

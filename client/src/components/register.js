@@ -17,6 +17,11 @@ function Register() {
 
   let history = useHistory();
 
+  let validateEmail = (eml) => {
+    let regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(String(eml).toLowerCase());
+  };
+
   let createUserData = (uid) => {
     firebase
       .firestore()
@@ -40,6 +45,24 @@ function Register() {
   };
 
   let handleRegisterWithEmail = () => {
+    if (username.trim() === "") {
+      return addToast("A valid username is required.", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
+    if (email.trim() === "" || !validateEmail(email)) {
+      return addToast("A valid email is required.", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
+    if (password.trim() === "" || confirmPassword.trim() === "") {
+      return addToast("A valid password is required.", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
     if (password === confirmPassword) {
       firebase
         .auth()
@@ -54,10 +77,21 @@ function Register() {
             autoDismiss: true,
           });
         });
+    } else {
+      return addToast("Passwords do not match", {
+        appearance: "error",
+        autoDismiss: true,
+      });
     }
   };
 
   let handleLoginWithFacebook = () => {
+    if (username.trim() === "") {
+      return addToast("A valid username is required.", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
     firebase
       .auth()
       .signInWithPopup(new firebase.auth.FacebookAuthProvider())
@@ -75,6 +109,12 @@ function Register() {
   };
 
   let handleLoginWithGithub = () => {
+    if (username.trim() === "") {
+      return addToast("A valid username is required.", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
     firebase
       .auth()
       .signInWithPopup(new firebase.auth.GithubAuthProvider())

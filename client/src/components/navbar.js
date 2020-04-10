@@ -19,7 +19,7 @@ function NavBar(props) {
     <Navbar bg="dark" className="flex-column p-0">
       <Navbar.Brand className="mr-0 text-white h6 px-3 d-flex flex-column align-items-center">
         <Logo color={"lime"} size={50} />
-        COVInfo
+        COVinfo
       </Navbar.Brand>
       <Navbar.Collapse id="basic-navbar-nav" className="flex-column w-100">
         <Nav className="flex-column w-100 flex">

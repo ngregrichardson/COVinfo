@@ -1,4 +1,4 @@
-(this.webpackJsonpCOVInfo = this.webpackJsonpCOVInfo || []).push([
+(this.webpackJsonpCOVinfo = this.webpackJsonpCOVinfo || []).push([
   [0],
   {
     267: function (e, t, a) {
@@ -99,7 +99,7 @@
                   "mr-0 text-white h6 px-3 d-flex flex-column align-items-center",
               },
               r.a.createElement(w, { color: "lime", size: 50 }),
-              "COVInfo"
+              "COVinfo"
             ),
             r.a.createElement(
               s.a.Collapse,
@@ -191,7 +191,7 @@
       var N = function () {
           return (
             Object(n.useEffect)(function () {
-              document.title = "Map | COVInfo";
+              document.title = "Map | COVinfo";
             }, []),
             r.a.createElement(j.a, {
               url: "https://covid19.health/",
@@ -303,7 +303,7 @@
                 key: "componentDidMount",
                 value: function () {
                   var e = this;
-                  (document.title = "Dashboard | COVInfo"),
+                  (document.title = "Dashboard | COVinfo"),
                     this.handleGetNews().then(function (t) {
                       e.setState({ global: { articles: t, loading: !1 } });
                     }),
@@ -474,7 +474,7 @@
             m = Object(n.useRef)(null),
             d = Object(K.useToasts)().addToast;
           Object(n.useEffect)(function () {
-            document.title = "Chat | COVInfo";
+            document.title = "Chat | COVinfo";
             var e = H()("http://covinfo.codingcomp.wtf");
             return (
               e.on("message", function (e) {
@@ -1445,7 +1445,7 @@
             V = M[1],
             F = Object(K.useToasts)().addToast;
           Object(n.useEffect)(function () {
-            (document.title = "Music | COVInfo"),
+            (document.title = "Music | COVinfo"),
               X.a
                 .firestore()
                 .collection("songs")

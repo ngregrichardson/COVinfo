@@ -3,7 +3,7 @@ import Iframe from "react-iframe";
 
 function Map() {
   useEffect(() => {
-    document.title = "Map | COVInfo";
+    document.title = "Map | COVinfo";
   }, []);
 
   return (

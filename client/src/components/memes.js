@@ -16,6 +16,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import Dropzone from "react-dropzone";
 import Masonry from "react-masonry-component";
 import { useToasts } from "react-toast-notifications";
+import ReactCountryFlag from "react-country-flag";
 
 function Memes(props) {
   const [memes, setMemes] = useState([]);
@@ -409,6 +410,7 @@ function Memes(props) {
                       <span style={{ color: `#${meme.user.username_color}` }}>
                         {meme.user.username}
                       </span>
+                      <ReactCountryFlag countryCode={meme.user.country} svg className="rounded ml-1"/>
                     </div>
                     <div className="d-flex flex-row align-items-center">
                       {props.authed && props.user.type === "admin" ? (
