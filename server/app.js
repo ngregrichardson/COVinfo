@@ -27,9 +27,9 @@ app.get("/mapData", (req, res) => {
     fetch("https://corona.lmao.ninja/countries"),
   ])
     .then((values) => {
-      res
-        .json({ geoJson: values[0].json(), coronaJson: values[1].json() })
-        .status(200);
+      Promise.all([values[0].json(), values[1].json()]).then((results) =>
+        res.json({ geoJson: results[0], coronaJson: results[1] }).status(200)
+      );
     })
     .catch((e) => {
       res
