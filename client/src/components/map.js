@@ -109,9 +109,7 @@ function Map(props) {
       .then(({ geoJson, coronaJson }) => {
         coronaJson.forEach((country) => {
           let currFeature = geoJson.features.find(
-            (feature) =>
-              feature.properties.ISO_A3.toLowerCase() ===
-              country.countryInfo.iso3.toLowerCase()
+            (feature) => feature.properties.ISO_A3 === country.countryInfo.iso3
           );
           if (currFeature) {
             currFeature.properties = {
