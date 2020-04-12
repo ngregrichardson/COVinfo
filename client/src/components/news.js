@@ -62,7 +62,7 @@ class News extends Component {
     return new Promise((res, rej) => {
       term = " " + getName(term);
       fetch(
-        `http://newsapi.org/v2/everything?q=coronavirus${term}&from=${moment()
+        `https://newsapi.org/v2/everything?q=coronavirus${term}&from=${moment()
           .subtract(14, "days")
           .format(
             "YYYY-MM-DD"
