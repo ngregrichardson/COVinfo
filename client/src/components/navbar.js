@@ -1,14 +1,13 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import {
-  Monitor,
   MessageSquare,
   Globe,
-  ShoppingCart,
+  FileText,
   Music,
   Image,
   Settings,
-    LogIn
+  LogIn,
 } from "react-feather";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
@@ -18,7 +17,7 @@ function NavBar(props) {
   return (
     <Navbar bg="dark" className="flex-column p-0">
       <Navbar.Brand className="mr-0 text-white h6 px-3 d-flex flex-column align-items-center">
-        <Logo color={"lime"} size={50} />
+        <Logo color={"lime"} size={50} className="hover-spinner" />
         COVinfo
       </Navbar.Brand>
       <Navbar.Collapse id="basic-navbar-nav" className="flex-column w-100">
@@ -29,7 +28,7 @@ function NavBar(props) {
             activeClassName={"current"}
             className="text-center py-3 w-100 nav-item"
           >
-            <Monitor size={35} />
+            <FileText size={35} />
           </NavLink>
           <NavLink
             to={"/map"}
@@ -59,27 +58,24 @@ function NavBar(props) {
           >
             <Image size={35} />
           </NavLink>
-          <NavLink
-            to={"/shop"}
-            activeClassName={"current"}
-            className="text-center py-3 w-100 nav-item"
-          >
-            <ShoppingCart size={35} />
-          </NavLink>
           <div className="flex" />
-          {props.authed ? <NavLink
+          {props.authed ? (
+            <NavLink
               to={"/settings"}
               activeClassName={"current"}
               className="text-center py-3 w-100 nav-item"
-          >
-            <Settings size={35} />
-          </NavLink> : <NavLink
+            >
+              <Settings size={35} />
+            </NavLink>
+          ) : (
+            <NavLink
               to={"/login"}
               activeClassName={"current"}
               className="text-center py-3 w-100 nav-item"
-          >
-            <LogIn size={35} />
-          </NavLink>}
+            >
+              <LogIn size={35} />
+            </NavLink>
+          )}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

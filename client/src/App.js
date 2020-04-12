@@ -33,9 +33,6 @@ function App() {
               <Route path="/memes">
                 <Memes />
               </Route>
-              <Route path="/shop">
-                <div>shop</div>
-              </Route>
               <Route path="/login">
                 <Login />
               </Route>

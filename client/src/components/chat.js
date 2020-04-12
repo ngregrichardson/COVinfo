@@ -36,9 +36,6 @@ function Chat(props) {
   };
 
   let sendMessage = () => {
-    console.log(encodeURI(
-        `${process.env.REACT_APP_DOMAIN}/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}&country=${props.user.country}`
-    ));
     fetch(
       encodeURI(
         `${process.env.REACT_APP_DOMAIN}/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}&country=${props.user.country}`

@@ -12,12 +12,12 @@ import {
   Trash,
 } from "react-feather";
 import { connect } from "react-redux";
-import HashLoader from "react-spinners/HashLoader";
 import { Button, Form, Modal, Dropdown } from "react-bootstrap";
 import InputMask from "react-input-mask";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useToasts } from "react-toast-notifications";
 import ReactCountryFlag from "react-country-flag";
+import Logo from "./logo";
 
 function Music(props) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -334,7 +334,7 @@ function Music(props) {
       </div>
       {loading ? (
         <div className="d-flex align-items-center justify-content-center w-100 flex">
-          <HashLoader size={75} />
+          <Logo color={"lime"} size={100} className="spinning-logo" />
         </div>
       ) : (
         <div className="h-100 p-3">
@@ -397,7 +397,10 @@ function Music(props) {
                     <span style={{ color: `#${song.user.username_color}` }}>
                       {song.user.username}
                     </span>
-                    <ReactCountryFlag countryCode={song.user.country} svg className="rounded ml-1"/>
+                    <ReactCountryFlag
+                      countryCode={song.user.country}
+                      className="ml-1"
+                    />
                   </div>
                   <div className="d-flex flex-row align-items-center">
                     {props.authed && props.user.type === "admin" ? (

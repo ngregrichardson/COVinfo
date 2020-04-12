@@ -26,6 +26,28 @@ code {
   padding: 50px 100px;
 }
 
+.map-tooltip {
+  position: absolute;
+  background-color: rgba(25,26,26, 0.9);
+  padding: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.map-tooltip > * {
+  color: #fff;
+  font-size: 1.5em;
+}
+
+.map-loading {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .nav-item > svg {
   color: white;
   cursor: pointer;
@@ -117,4 +139,27 @@ code {
 
 .dropzone:hover {
   border-color: gray;
+}
+
+.hover-spinner {
+  transform: rotateZ(0deg);
+  transition: transform 1s ease;
+}
+
+.hover-spinner:hover, .hover-spinner:active, .hover-spinner:focus {
+  transform: rotateZ(360deg);
+  transition: transform 1s ease;
+}
+
+.spinning-logo {
+  animation: spin-logo 2s ease infinite;
+}
+
+@keyframes spin-logo {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
 }

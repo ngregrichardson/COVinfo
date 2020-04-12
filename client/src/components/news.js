@@ -1,32 +1,48 @@
 import React, { Component } from "react";
 import moment from "moment";
-import HashLoader from "react-spinners/HashLoader";
 import NewsStory from "./newsStory";
 import { Scrollbars } from "react-custom-scrollbars";
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
 import { getName } from "country-list";
-
+import ReactCountryFlag from "react-country-flag";
+import Logo from "./logo";
 
 class News extends Component {
   state = {
     global: { articles: [], loading: true },
-    local: { articles: [], loading: true, title: 'Local Coronavirus News' },
+    local: { articles: [], loading: true, title: "Local Coronavirus News" },
     coords: { latitude: null, longitude: null },
   };
 
   componentDidUpdate(oldProps) {
     const newProps = this.props;
-    if(oldProps.authed !== newProps.authed) {
-      this.setState({local: {...this.state.local, loading: true}})
+    if (oldProps.authed !== newProps.authed) {
+      this.setState({ local: { ...this.state.local, loading: true } });
       this.getLocalNews();
     }
   }
 
   getLocalNews = () => {
-    if (this.props.authed) {
-      this.handleGetNews(this.props.user.country).then((articles) => {
+    if (this.props.authed && this.props.user) {
+      let usr = this.props.user;
+      this.handleGetNews(usr.country).then((articles) => {
         this.setState({
-          local: { articles, loading: false, title: `Local Coronavirus News (${this.props.user.country})` },
+          local: {
+            articles,
+            loading: false,
+            title: `Local Coronavirus News (${usr.country})`,
+            country: usr.country,
+          },
+        });
+      });
+    } else {
+      this.handleGetNews("United States of America").then((articles) => {
+        this.setState({
+          local: {
+            articles,
+            loading: false,
+            title: `Local Coronavirus News (US)`,
+          },
         });
       });
     }
@@ -72,7 +88,10 @@ class News extends Component {
       <div className="d-flex flex-column flex p-3">
         <div className="d-flex flex-row">
           <h3 className="flex ml-2">Global Coronavirus News</h3>
-          <h3 className="flex ml-2">{local.title}</h3>
+          <div className="flex ml-2 d-flex flex-row align-items-center mb-2">
+            <h3 className="m-0">{local.title}</h3>
+            <ReactCountryFlag countryCode={local.country} className="ml-1" />
+          </div>
         </div>
         <div className="d-flex flex-row flex">
           <div
@@ -91,12 +110,19 @@ class News extends Component {
               )}
             >
               {global.loading ? (
-                <HashLoader size={75} />
+                <Logo color={"lime"} size={100} className="spinning-logo" />
               ) : (
                 this.state.global.articles.map((article) => {
                   if (article.title && article.title.trim() !== "") {
                     return (
-                      <NewsStory article={article} key={article.publishedAt + article.title + `${Math.random() * 5}`} />
+                      <NewsStory
+                        article={article}
+                        key={
+                          article.publishedAt +
+                          article.title +
+                          `${Math.random() * 5}`
+                        }
+                      />
                     );
                   }
                   return null;
@@ -120,12 +146,19 @@ class News extends Component {
               )}
             >
               {local.loading ? (
-                <HashLoader size={75} />
+                <Logo color={"lime"} size={100} className="spinning-logo" />
               ) : (
                 this.state.local.articles.map((article) => {
                   if (article.title && article.title.trim() !== "") {
                     return (
-                      <NewsStory article={article} key={article.publishedAt + article.title + `${Math.random() * 5}`} />
+                      <NewsStory
+                        article={article}
+                        key={
+                          article.publishedAt +
+                          article.title +
+                          `${Math.random() * 5}`
+                        }
+                      />
                     );
                   }
                   return null;
@@ -140,7 +173,7 @@ class News extends Component {
 }
 
 let mapStateToProps = (state, ownProps) => {
-  return{...ownProps, user: state.user, authed: state.authed}
+  return { ...ownProps, user: state.user, authed: state.authed };
 };
 
 export default connect(mapStateToProps)(News);

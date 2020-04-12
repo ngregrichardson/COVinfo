@@ -10,13 +10,13 @@ import {
   Trash,
 } from "react-feather";
 import { connect } from "react-redux";
-import HashLoader from "react-spinners/HashLoader";
 import { Button, Modal, Dropdown, ProgressBar } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 import Dropzone from "react-dropzone";
 import Masonry from "react-masonry-component";
 import { useToasts } from "react-toast-notifications";
 import ReactCountryFlag from "react-country-flag";
+import Logo from "./logo";
 
 function Memes(props) {
   const [memes, setMemes] = useState([]);
@@ -371,7 +371,7 @@ function Memes(props) {
       </div>
       {loading ? (
         <div className="d-flex align-items-center justify-content-center w-100 flex">
-          <HashLoader size={75} />
+          <Logo color={"lime"} size={100} className="spinning-logo" />
         </div>
       ) : (
         <div className="flex p-3">
@@ -410,7 +410,10 @@ function Memes(props) {
                       <span style={{ color: `#${meme.user.username_color}` }}>
                         {meme.user.username}
                       </span>
-                      <ReactCountryFlag countryCode={meme.user.country} svg className="rounded ml-1"/>
+                      <ReactCountryFlag
+                        countryCode={meme.user.country}
+                        className="ml-1"
+                      />
                     </div>
                     <div className="d-flex flex-row align-items-center">
                       {props.authed && props.user.type === "admin" ? (

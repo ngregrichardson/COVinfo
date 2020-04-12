@@ -4,10 +4,10 @@ import { getData } from "country-list";
 import { connect } from "react-redux";
 import firebase from "firebase";
 import { TwitterPicker } from "react-color";
-import HashLoader from "react-spinners/HashLoader";
 import { LogOut } from "react-feather";
 import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
+import Logo from "./logo";
 
 function Settings(props) {
   const [username, setUsername] = useState(
@@ -106,7 +106,7 @@ function Settings(props) {
           }}
           className="d-flex align-items-center justify-content-center"
         >
-          <HashLoader size={45} />
+          <Logo color={"lime"} size={100} className="spinning-logo" />
         </div>
       ) : null}
       <div className="bg-white d-flex flex-column align-items-center p-5 rounded boxShadow">
