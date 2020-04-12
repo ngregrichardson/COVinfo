@@ -111,7 +111,7 @@ function Map(props) {
           let currFeature = geoJson.features.find(
             (feature) =>
               feature.properties.ISO_A3.toLowerCase() ===
-              country.country.countryInfo.iso3.toLowerCase()
+              country.countryInfo.iso3.toLowerCase()
           );
           if (currFeature) {
             currFeature.properties = {
