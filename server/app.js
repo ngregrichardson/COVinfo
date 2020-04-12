@@ -33,6 +33,31 @@ app.post("/chat/sendMessage", (req, res) => {
   res.send({ statusCode: 200, message: "Sent." }).status(200);
 });
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
+app.get("/mapData", (req, res) => {
+  Promise.all([
+    fetch("https://datahub.io/core/geo-countries/r/countries.geojson"),
+    fetch("https://corona.lmao.ninja/countries"),
+  ])
+    .then((values) => {
+      res
+        .json({ geoJson: values[0].json(), coronaJson: values[1].json() })
+        .status(200);
+    })
+    .catch((e) => {
+      res
+        .json({
+          errorCode: 500,
+          message: "There was a problem getting the data.",
+        })
+        .status(500);
+    });
+});
+
 io.on("connection", (socket) => {
   console.log("someone connected!");
 });

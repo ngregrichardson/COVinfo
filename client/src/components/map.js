@@ -3,6 +3,7 @@ import ReactMapGl, { Source, Layer } from "react-map-gl";
 import { connect } from "react-redux";
 import ReactCountryFlag from "react-country-flag";
 import Logo from "./logo";
+import { useToasts } from "react-toast-notifications";
 
 const dataLayer = {
   id: "data",
@@ -39,6 +40,7 @@ function Map(props) {
   const [geoData, setGeoData] = useState(null);
   const [hoveredFeature, setHoveredFeature] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToast } = useToasts();
 
   let _onHover = (event) => {
     const { features } = event;
@@ -102,45 +104,49 @@ function Map(props) {
 
   useEffect(() => {
     document.title = "Map | COVinfo";
-    fetch("https://datahub.io/core/geo-countries/r/countries.geojson")
+    fetch("https://covinfo.tech/mapData")
       .then((response) => response.json())
-      .then((geoJson) => {
-        fetch("https://corona.lmao.ninja/countries")
-          .then((response) => response.json())
-          .then((coronaJson) => {
-            coronaJson.forEach((country) => {
-              let currFeature = geoJson.features.find(
-                (feature) =>
-                  feature.properties.ISO_A3.toLowerCase() ===
-                  country.country.countryInfo.iso3.toLowerCase()
-              );
-              if (currFeature) {
-                currFeature.properties = {
-                  ...currFeature.properties,
-                  cases: country.cases,
-                  deaths: country.deaths,
-                  recovered: country.recovered,
-                  casesToday: country.todayCases,
-                  tests: country.tests,
-                  iso2: country.countryInfo.iso2,
-                };
-                if (props.authed && props.user) {
-                  if (
-                    props.user.country === country.countryInfo.iso2 ||
-                    props.user.country === country.countryInfo.iso3
-                  ) {
-                    setViewport({
-                      ...viewport,
-                      latitude: country.countryInfo.lat,
-                      longitude: country.countryInfo.long,
-                    });
-                  }
-                }
+      .then(({ geoJson, coronaJson }) => {
+        coronaJson.forEach((country) => {
+          let currFeature = geoJson.features.find(
+            (feature) =>
+              feature.properties.ISO_A3.toLowerCase() ===
+              country.country.countryInfo.iso3.toLowerCase()
+          );
+          if (currFeature) {
+            currFeature.properties = {
+              ...currFeature.properties,
+              cases: country.cases,
+              deaths: country.deaths,
+              recovered: country.recovered,
+              casesToday: country.todayCases,
+              tests: country.tests,
+              iso2: country.countryInfo.iso2,
+            };
+            if (props.authed && props.user) {
+              if (
+                props.user.country === country.countryInfo.iso2 ||
+                props.user.country === country.countryInfo.iso3
+              ) {
+                setViewport({
+                  ...viewport,
+                  latitude: country.countryInfo.lat,
+                  longitude: country.countryInfo.long,
+                });
               }
-            });
-            setGeoData(geoJson);
-            setTimeout(() => setLoading(false), 1000);
-          });
+            }
+          }
+        });
+        setGeoData(geoJson);
+        setTimeout(() => setLoading(false), 1000);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+        addToast("There was a problem loading the data", {
+          appearance: "error",
+          autoDismiss: true,
+        });
       });
   }, []);
 
