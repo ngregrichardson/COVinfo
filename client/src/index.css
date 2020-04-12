@@ -141,12 +141,12 @@ code {
   border-color: gray;
 }
 
-.hover-spinner {
+.hover-spinner > svg {
   transform: rotateZ(0deg);
   transition: transform 1s ease;
 }
 
-.hover-spinner:hover, .hover-spinner:active, .hover-spinner:focus {
+.hover-spinner:hover > svg, .hover-spinner:active > svg {
   transform: rotateZ(360deg);
   transition: transform 1s ease;
 }

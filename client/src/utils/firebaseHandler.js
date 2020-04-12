@@ -27,13 +27,17 @@ let initFirebase = () => {
         .doc(user.uid)
         .get()
         .then((userData) => {
-          rootStore.dispatch({
-            type: "UPDATE_USER",
-            user: userData.data(),
-          });
+          if (userData.exists) {
+            rootStore.dispatch({
+              type: "UPDATE_USER",
+              user: userData.data(),
+            });
+          } else {
+            createBasicUser(user);
+          }
         })
         .catch((e) => {
-          console.log(e);
+          createBasicUser(user);
         });
     } else {
       rootStore.dispatch({
@@ -41,6 +45,26 @@ let initFirebase = () => {
       });
     }
   });
+};
+
+let createBasicUser = (user) => {
+  let userData = {
+    username: user.displayName,
+    country: "US",
+    username_color: "000000",
+    user_id: user.uid,
+  };
+  firebase
+    .firestore()
+    .collection("users")
+    .doc(user.uid)
+    .set(userData)
+    .then(() =>
+      rootStore.dispatch({
+        type: "UPDATE_USER",
+        user: userData,
+      })
+    );
 };
 
 export { initFirebase };

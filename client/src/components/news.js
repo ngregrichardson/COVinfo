@@ -90,7 +90,10 @@ class News extends Component {
           <h3 className="flex ml-2">Global Coronavirus News</h3>
           <div className="flex ml-2 d-flex flex-row align-items-center mb-2">
             <h3 className="m-0">{local.title}</h3>
-            <ReactCountryFlag countryCode={local.country} className="ml-1" />
+            <ReactCountryFlag
+              countryCode={local.country || "US"}
+              className="ml-1"
+            />
           </div>
         </div>
         <div className="d-flex flex-row flex">
