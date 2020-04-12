@@ -88,7 +88,11 @@ function Map(props) {
         )}
         <div style={{ fontSize: "1em" }}>
           Data Provided by{" "}
-          <a href="https://github.com/NovelCOVID/API" target="_blank">
+          <a
+            href="https://github.com/NovelCOVID/API"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             NovelCOVID
           </a>
         </div>
@@ -107,10 +111,8 @@ function Map(props) {
             coronaJson.forEach((country) => {
               let currFeature = geoJson.features.find(
                 (feature) =>
-                  feature.properties.ADMIN.toLowerCase() ===
-                    country.country.toLowerCase() ||
                   feature.properties.ISO_A3.toLowerCase() ===
-                    country.country.toLowerCase()
+                  country.country.countryInfo.iso3.toLowerCase()
               );
               if (currFeature) {
                 currFeature.properties = {
@@ -137,7 +139,7 @@ function Map(props) {
               }
             });
             setGeoData(geoJson);
-            setTimeout(() => setLoading(false), 500);
+            setTimeout(() => setLoading(false), 1000);
           });
       });
   }, []);
