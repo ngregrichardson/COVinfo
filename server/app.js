@@ -15,24 +15,6 @@ const server = http.createServer(app);
 
 const io = socket(server);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "client/build/index.html"));
-});
-
-app.post("/chat/sendMessage", (req, res) => {
-  let params = req.query;
-  if (
-    !params.username ||
-    !params.message ||
-    !params.username_color ||
-    !params.country
-  ) {
-    return res.send({ statusCode: 401, message: "Bad params." }).status(401);
-  }
-  io.emit("message", params);
-  res.send({ statusCode: 200, message: "Sent." }).status(200);
-});
-
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();
@@ -56,6 +38,24 @@ app.get("/mapData", (req, res) => {
         })
         .status(500);
     });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client/build/index.html"));
+});
+
+app.post("/chat/sendMessage", (req, res) => {
+  let params = req.query;
+  if (
+    !params.username ||
+    !params.message ||
+    !params.username_color ||
+    !params.country
+  ) {
+    return res.send({ statusCode: 401, message: "Bad params." }).status(401);
+  }
+  io.emit("message", params);
+  res.send({ statusCode: 200, message: "Sent." }).status(200);
 });
 
 io.on("connection", (socket) => {
