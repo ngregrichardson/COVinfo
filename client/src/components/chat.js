@@ -5,6 +5,7 @@ import ChatMessage from "./chatMessage";
 import openSocket from "socket.io-client";
 import { connect } from "react-redux";
 import { useToasts } from "react-toast-notifications";
+import { useMediaQuery } from "react-responsive";
 const socket = openSocket(process.env.REACT_APP_DOMAIN);
 
 function Chat(props) {
@@ -12,6 +13,9 @@ function Chat(props) {
   const [messages, setMessages] = useState([]);
   const messagesRef = useRef(messages);
   const scrollBar = useRef(null);
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
   const { addToast } = useToasts();
 
   useEffect(() => {
@@ -38,7 +42,7 @@ function Chat(props) {
   let sendMessage = () => {
     fetch(
       encodeURI(
-        `${process.env.REACT_APP_DOMAIN}/chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}&country=${props.user.country}`
+        `${process.env.REACT_APP_DOMAIN}chat/sendMessage?message=${message}&username=${props.user.username}&username_color=${props.user.username_color}&country=${props.user.country}`
       ),
       { method: "POST" }
     )
@@ -63,7 +67,9 @@ function Chat(props) {
   return (
     <div className="w-100 h-100 d-flex flex-column">
       <div className="flex pl-3 pt-3 pr-3 d-flex flex-column">
-        <h3>Quarantine Chat</h3>
+        <h3 className={isSmallDevice ? "align-self-center" : ""}>
+          Quarantine Chat
+        </h3>
         <Scrollbars
           renderView={(props) => <div {...props} className="pr-3 flex" />}
           ref={scrollBar}

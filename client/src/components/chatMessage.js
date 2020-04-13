@@ -7,7 +7,7 @@ function ChatMessage(props) {
       <div className="d-flex flex-row align-items-center mb-1">
         <h6
           style={{ color: "#" + props.message.username_color }}
-          className="mb-0"
+          className="mb-0 font-weight-bold"
         >
           {props.message.username}
         </h6>

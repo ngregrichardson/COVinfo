@@ -18,6 +18,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { useToasts } from "react-toast-notifications";
 import ReactCountryFlag from "react-country-flag";
 import Logo from "./logo";
+import { useMediaQuery } from "react-responsive/src";
 
 function Music(props) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,6 +30,9 @@ function Music(props) {
   const [selectedSong, setSelectedSong] = useState(null);
   const [timestamp, setTimestamp] = useState("00:00:00");
   const [sortType, setSortType] = useState("popular");
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
   const { addToast } = useToasts();
 
   let loadSongs = () => {
@@ -300,8 +304,10 @@ function Music(props) {
           </Button>
         </Modal.Footer>
       </Modal>
-      <div className="w-100 px-3 mt-3">
-        <h3>Hand Washing Music</h3>
+      <div className="w-100 px-3 mt-3 d-flex flex-column">
+        <h3 className={isSmallDevice ? "align-self-center" : ""}>
+          Hand Washing Music
+        </h3>
         <div className="w-100 d-flex flex-row rounded-pill messageInputContainer">
           <input
             type={"text"}
@@ -369,20 +375,21 @@ function Music(props) {
           </Dropdown>
           <Scrollbars
             hideTracksWhenNotNeeded
-            renderView={(props) => <div {...props} />}
+            renderView={(props) => (
+              <div {...props} style={{ ...props.style, marginBottom: 50 }} />
+            )}
           >
             {songs.map((song) => (
               <div
-                className="border d-inline-block m-1"
+                className="border d-inline-block m-1 flex"
                 style={{ borderRadius: 10, borderColor: "lightgray" }}
                 key={song.song_id}
               >
                 <ReactPlayer
                   url={`${song.url}&t=${song.seconds}`}
                   controls={false}
-                  className="m-2"
-                  width={640 * (2 / 3) - 30}
-                  height={360 * (2 / 3) - 30}
+                  className="p-2"
+                  width={"100%"}
                 />
                 <div
                   style={{
@@ -391,7 +398,13 @@ function Music(props) {
                     backgroundColor: "lightgray",
                   }}
                 />
-                <div className="p-2 d-flex flex-row align-items-center">
+                <div
+                  className={
+                    isSmallDevice
+                      ? "p-2 d-flex flex-column justify-content-center"
+                      : "p-2 d-flex flex-row align-items-center"
+                  }
+                >
                   <div className="flex">
                     <span>Submitted by: </span>
                     <span style={{ color: `#${song.user.username_color}` }}>
@@ -420,10 +433,11 @@ function Music(props) {
                     >
                       <ThumbsUp
                         color={
-                          props.authed &&
-                          song.upvotes.includes(props.user.user_id)
-                            ? "gold"
-                            : "black"
+                          props.authed
+                            ? song.upvotes.includes(props.user.user_id)
+                              ? "gold"
+                              : "black"
+                            : "gray"
                         }
                       />
                     </button>

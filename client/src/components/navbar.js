@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav, Modal, Button } from "react-bootstrap";
 import {
   MessageSquare,
@@ -8,15 +8,32 @@ import {
   Image,
   Settings,
   LogIn,
+  Menu,
+  X,
 } from "react-feather";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import Logo from "./logo";
+import { useMediaQuery } from "react-responsive";
+import SlidingPane from "react-sliding-pane";
+import { withRouter } from "react-router-dom";
 
 function NavBar(props) {
   const [aboutModalShown, setAboutModalShown] = useState(false);
+  const [open, setOpen] = useState(false);
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
 
-  return (
+  useEffect(() => {
+    if (isSmallDevice) {
+      return props.history.listen(() => {
+        setOpen(false);
+      });
+    }
+  });
+
+  let _renderNavbar = () => (
     <>
       <Navbar bg="dark" className="flex-column p-0">
         <Navbar.Brand
@@ -188,10 +205,49 @@ function NavBar(props) {
       </Modal>
     </>
   );
+
+  let _renderToggle = () => (
+    <Button
+      className="align-self-start position-absolute"
+      style={{
+        zIndex: 50,
+        left: 10,
+        top: 10,
+        border: open ? "none" : "solid 2px rgba(0, 0, 0, 0.5)",
+        backgroundColor: open ? "transparent" : "rgba(0, 0, 0, 0.1)",
+      }}
+      onClick={() => setOpen(!open)}
+    >
+      {open ? (
+        <X className="text-white-50" />
+      ) : (
+        <Menu className="text-black-50" />
+      )}
+    </Button>
+  );
+
+  return isSmallDevice ? (
+    <>
+      <SlidingPane
+        isOpen={open}
+        from={"left"}
+        width={"25%"}
+        onRequestClose={() => setOpen(!open)}
+        className="bg-dark navbarZIndex"
+        overlayClassName="navbarOverlayZIndex"
+        closeIcon={<div />}
+      >
+        {_renderNavbar()}
+      </SlidingPane>
+      {_renderToggle()}
+    </>
+  ) : (
+    _renderNavbar()
+  );
 }
 
 let mapStateToProps = (state, ownProps) => {
   return { ...ownProps, user: state.user, authed: state.authed };
 };
 
-export default connect(mapStateToProps)(NavBar);
+export default connect(mapStateToProps)(withRouter(NavBar));

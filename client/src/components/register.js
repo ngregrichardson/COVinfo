@@ -138,13 +138,13 @@ function Register() {
         <div
           style={{
             height: 1,
-            width: "25%",
+            width: "15%",
             backgroundColor: "gray",
             marginBottom: 15,
           }}
         />
         <Tabs defaultActiveKey="email" id={"registerTabs"}>
-          <Tab eventKey="email" title="Email">
+          <Tab eventKey="email" title="Email" className="mt-2">
             <div className="d-flex flex-column align-items-center">
               <Form>
                 <Form.Group controlId="emailUsername">
@@ -199,14 +199,14 @@ function Register() {
                 </Form.Group>
               </Form>
               <button
-                className="bg-white smLoginButton rounded-pill w-25 py-2"
+                className="bg-white smLoginButton rounded-pill py-2 px-3"
                 onClick={handleRegisterWithEmail}
               >
                 Register
               </button>
             </div>
           </Tab>
-          <Tab eventKey="facebook" title="Facebook">
+          <Tab eventKey="facebook" title="Facebook" className="mt-2">
             <div className="d-flex flex-column align-items-center">
               <Form>
                 <Form.Group controlId="facebookUsername">
@@ -234,14 +234,14 @@ function Register() {
                 </Form.Group>
               </Form>
               <button
-                className="bg-white smLoginButton rounded-pill w-25 py-2"
+                className="bg-white smLoginButton rounded-pill py-2 px-3"
                 onClick={handleLoginWithFacebook}
               >
                 <Facebook /> Register
               </button>
             </div>
           </Tab>
-          <Tab eventKey="github" title="Github">
+          <Tab eventKey="github" title="Github" className="mt-2">
             <div className="d-flex flex-column align-items-center">
               <Form>
                 <Form.Group controlId="githubUsername">
@@ -269,7 +269,7 @@ function Register() {
                 </Form.Group>
               </Form>
               <button
-                className="bg-white smLoginButton rounded-pill w-25 py-2"
+                className="bg-white smLoginButton rounded-pill py-2 px-3"
                 onClick={handleLoginWithGithub}
               >
                 <GitHub /> Register

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import ReactCountryFlag from "react-country-flag";
 import Logo from "./logo";
 import { useToasts } from "react-toast-notifications";
+import { useMediaQuery } from "react-responsive";
 
 const dataLayer = {
   id: "data",
@@ -40,6 +41,9 @@ function Map(props) {
   const [geoData, setGeoData] = useState(null);
   const [hoveredFeature, setHoveredFeature] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
   const { addToast } = useToasts();
 
   let _onHover = (event) => {
@@ -48,9 +52,13 @@ function Map(props) {
     setHoveredFeature(hovered);
   };
 
+  window.onresize = () => {
+    setViewport({ ...viewport, width: "100%", height: "100%" });
+  };
+
   let _renderTooltip = () => {
     return hoveredFeature ? (
-      <div className="map-tooltip">
+      <div className={isSmallDevice ? "small-map-tooltip" : "map-tooltip"}>
         <div className="d-flex flex-row align-items-center">
           <div className="font-weight-bold">
             {hoveredFeature.properties.ADMIN}
@@ -88,7 +96,7 @@ function Map(props) {
             {numberWithCommas(hoveredFeature.properties.casesToday)}
           </div>
         )}
-        <div style={{ fontSize: "1em" }}>
+        <div style={{ color: "gray", fontSize: "0.8em" }}>
           Data Provided by{" "}
           <a
             href="https://github.com/NovelCOVID/API"

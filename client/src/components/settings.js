@@ -196,7 +196,7 @@ function Settings(props) {
           </Form.Group>
         </Form>
         <button
-          className={`bg-white smLoginButton rounded-pill w-25 py-2 ${
+          className={`bg-white smLoginButton rounded-pill py-2 px-3 ${
             Object.keys(updatedValues).length === 0 ? "fullButton" : ""
           }`}
           onClick={handleSaveUser}
@@ -205,7 +205,7 @@ function Settings(props) {
           Save User
         </button>
         <button
-          className="bg-white smLoginButton rounded-pill w-25 py-2 text-danger mt-2"
+          className="bg-white smLoginButton rounded-pill py-2 px-3 text-danger mt-2"
           onClick={handleLogOut}
         >
           <LogOut /> Log Out

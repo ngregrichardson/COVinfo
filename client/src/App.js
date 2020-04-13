@@ -12,11 +12,18 @@ import Settings from "./components/settings";
 import Music from "./components/music";
 import Memes from "./components/memes";
 import { ToastProvider } from "react-toast-notifications";
+import { useMediaQuery } from "react-responsive";
 
 function App() {
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
   return (
     <Provider store={rootStore}>
-      <ToastProvider autoDismissTimeout={3000}>
+      <ToastProvider
+        autoDismissTimeout={3000}
+        placement={isSmallDevice ? "bottom-center" : "top-right"}
+      >
         <Router>
           <div className="d-flex flex-row h-100">
             <Navbar />

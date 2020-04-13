@@ -13,10 +13,11 @@ import { connect } from "react-redux";
 import { Button, Modal, Dropdown, ProgressBar } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 import Dropzone from "react-dropzone";
-import Masonry from "react-masonry-component";
+import Masonry from "react-masonry-css";
 import { useToasts } from "react-toast-notifications";
 import ReactCountryFlag from "react-country-flag";
 import Logo from "./logo";
+import { useMediaQuery } from "react-responsive/src";
 
 function Memes(props) {
   const [memes, setMemes] = useState([]);
@@ -30,6 +31,9 @@ function Memes(props) {
   const [uploadingProgress, setUploadingProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const widthRef = useRef(null);
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
   const { addToast } = useToasts();
 
   let loadMemes = () => {
@@ -265,7 +269,7 @@ function Memes(props) {
               <img
                 src={URL.createObjectURL(memeToUpload)}
                 alt={"memeToUpload"}
-                style={{ borderRadius: 5 }}
+                style={{ borderRadius: 5, width: "70%" }}
               />
               {deleteHovered ? (
                 <div
@@ -332,7 +336,11 @@ function Memes(props) {
           </Button>
         </Modal.Footer>
       </Modal>
-      <h3 className="px-3 pt-3">Coronavirus Memes</h3>
+      <h3
+        className={isSmallDevice ? "align-self-center px-3 pt-3" : "px-3 pt-3"}
+      >
+        Coronavirus Memes
+      </h3>
       <div className="d-flex flex-row align-items-center justify-content-between mb-3 px-3">
         <Button
           variant="success"
@@ -379,16 +387,17 @@ function Memes(props) {
             hideTracksWhenNotNeeded
             renderView={(props) => <div {...props} />}
           >
-            <Masonry className="pb-5">
+            <Masonry
+              className="pr-3 pb-5 d-flex w-100"
+              breakpointCols={{ default: 4, 1224: 3, 900: 2, 700: 1 }}
+              columnClassName="align-items-center mx-1"
+            >
               {memes.map((meme) => (
                 <div
-                  className="border d-inline-block m-1"
+                  className="border d-inline-block m-1 w-100"
                   style={{
                     borderRadius: 10,
                     borderColor: "lightgray",
-                    width: widthRef.current
-                      ? widthRef.current.offsetWidth / 4 + 30
-                      : 0,
                   }}
                   key={meme.meme_id}
                 >
@@ -404,7 +413,13 @@ function Memes(props) {
                       backgroundColor: "lightgray",
                     }}
                   />
-                  <div className="p-2 d-flex flex-row align-items-center">
+                  <div
+                    className={
+                      isSmallDevice
+                        ? "p-2 d-flex flex-column justify-content-center"
+                        : "p-2 d-flex flex-row align-items-center"
+                    }
+                  >
                     <div className="flex">
                       <span>Submitted by: </span>
                       <span style={{ color: `#${meme.user.username_color}` }}>
@@ -435,10 +450,11 @@ function Memes(props) {
                       >
                         <ThumbsUp
                           color={
-                            props.authed &&
-                            meme.upvotes.includes(props.user.user_id)
-                              ? "gold"
-                              : "black"
+                            props.authed
+                              ? meme.upvotes.includes(props.user.user_id)
+                                ? "gold"
+                                : "black"
+                              : "gray"
                           }
                         />
                       </button>

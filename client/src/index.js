@@ -2,13 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-sliding-pane/dist/react-sliding-pane.css";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import Geocode from "react-geocode";
 import { initFirebase } from "./utils/firebaseHandler";
-
-Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
 initFirebase();
 
