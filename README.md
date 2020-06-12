@@ -14,3 +14,4 @@ The front-end of COVinfo is built with vanilla React.js and Bootstrap for UI des
 ## What's next for COVinfo
 - [ ] `About COVID-19` page
 - [ ] `How To Help` page
+- [ ] Add full testing with Jest
