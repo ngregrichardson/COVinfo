@@ -1,4 +1,4 @@
-# COVinfo ![Node.js](https://github.com/ngregrichardson/COVinfo/workflows/Node.js%20CI/badge.svg)
+# COVinfo ![Build](https://github.com/ngregrichardson/COVinfo/workflows/Build/badge.svg)
 
 Your own personal COVID-19 dashboard.
 
