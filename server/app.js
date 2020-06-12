@@ -6,7 +6,7 @@ const path = require("path");
 const fetch = require("node-fetch");
 const moment = require("moment");
 
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -35,7 +35,7 @@ app.get("/getNews", (req, res) => {
     .then((d) => d.json())
     .then((result) => {
       if (result.status !== "error") {
-        res.json(result.json).status(200);
+        res.json(result.articles).status(200);
       } else {
         res
           .json({
