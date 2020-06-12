@@ -35,7 +35,7 @@ app.get("/getNews", (req, res) => {
     .then((d) => d.json())
     .then((result) => {
       if (result.status !== "error") {
-        res.json(result.articles).status(200);
+        res.json(result).status(200);
       } else {
         res
           .json({
