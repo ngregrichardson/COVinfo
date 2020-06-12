@@ -21,6 +21,39 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/getNews", (req, res) => {
+  fetch(
+    `https://newsapi.org/v2/everything?q=coronavirus${
+      ` ${req.query.term}` || ""
+    }&from=${moment()
+      .subtract(14, "days")
+      .format(
+        "YYYY-MM-DD"
+      )}&sortBy=relevancy&language=en&apiKey=a24bf4b7cea34b6c88e899238f856cfa`
+  )
+    .then((d) => d.json())
+    .then((result) => {
+      if (result.status !== "error") {
+        res.json(result.json).status(200);
+      } else {
+        res
+          .json({
+            errorCode: 500,
+            message: "There was a problem getting the news.",
+          })
+          .status(500);
+      }
+    })
+    .catch((e) => {
+      res
+        .json({
+          errorCode: 500,
+          message: "There was a problem getting the news.",
+        })
+        .status(500);
+    });
+});
+
 app.get("/mapData", (req, res) => {
   Promise.all([
     fetch("https://datahub.io/core/geo-countries/r/countries.geojson"),

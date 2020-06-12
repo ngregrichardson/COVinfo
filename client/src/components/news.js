@@ -30,26 +30,17 @@ function News(props) {
     }
   }, [props.authed]);
 
-  let handleGetNews = (term = "") => {
+  let handleGetNews = (term) => {
     return new Promise((res, rej) => {
-      term = " " + getName(term);
       fetch(
-        `https://newsapi.org/v2/everything?q=coronavirus${term}&from=${moment()
-          .subtract(14, "days")
-          .format(
-            "YYYY-MM-DD"
-          )}&sortBy=relevancy&language=en&apiKey=a24bf4b7cea34b6c88e899238f856cfa`
+        `https://covinfo.tech/getNews${term ? `?term=${getName(term)}` : ""}`
       )
         .then((d) => d.json())
         .then((json) => {
-          if (json.status !== "error") {
-            res(json.articles);
-          } else {
-            rej("There was a problem getting the news.");
-          }
+          res(json.articles);
         })
         .catch((e) => {
-          rej("There was a problem getting the news.");
+          rej(e.message);
         });
     });
   };
