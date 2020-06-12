@@ -24,8 +24,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: action-yarn
-      uses: comchangs/action-yarn@v0.1-beta
     - name: Install client packages
       working-directory: ./client
       run: |
