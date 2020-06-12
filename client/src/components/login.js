@@ -31,8 +31,7 @@ function Login() {
         });
       })
       .catch((e) => {
-        console.log(e);
-        addToast("There was a problem logging in.", {
+        addToast(e.message, {
           appearance: "error",
           autoDismiss: true,
         });
@@ -52,8 +51,7 @@ function Login() {
         });
       })
       .catch((e) => {
-        console.log(e);
-        addToast("There was a problem logging in.", {
+        addToast(e.message, {
           appearance: "error",
           autoDismiss: true,
         });
@@ -73,8 +71,7 @@ function Login() {
         });
       })
       .catch((e) => {
-        console.log(e);
-        addToast("There was a problem logging in.", {
+        addToast(e.message, {
           appearance: "error",
           autoDismiss: true,
         });

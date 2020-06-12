@@ -6,7 +6,7 @@ const path = require("path");
 const fetch = require("node-fetch");
 const moment = require("moment");
 
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -91,10 +91,6 @@ app.post("/chat/sendMessage", (req, res) => {
   }
   io.emit("message", params);
   res.send({ statusCode: 200, message: "Sent." }).status(200);
-});
-
-io.on("connection", (socket) => {
-  console.log("someone connected!");
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

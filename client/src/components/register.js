@@ -40,8 +40,7 @@ function Register() {
         });
       })
       .catch((e) => {
-        console.log(e);
-        addToast("There was a problem creating the user.", {
+        addToast(e.message, {
           appearance: "error",
           autoDismiss: true,
         });
@@ -75,8 +74,7 @@ function Register() {
           createUserData(user.user.uid);
         })
         .catch((e) => {
-          console.log(e);
-          addToast("There was a problem creating the user.", {
+          addToast(e.message, {
             appearance: "error",
             autoDismiss: true,
           });
@@ -104,8 +102,7 @@ function Register() {
         createUserData(user.user.uid);
       })
       .catch((e) => {
-        console.log(e);
-        addToast("There was a problem creating the user.", {
+        addToast(e.message, {
           appearance: "error",
           autoDismiss: true,
         });
@@ -127,8 +124,7 @@ function Register() {
         createUserData(user.user.uid);
       })
       .catch((e) => {
-        console.log(e);
-        addToast("There was a problem creating the user.", {
+        addToast(e.message, {
           appearance: "error",
           autoDismiss: true,
         });
