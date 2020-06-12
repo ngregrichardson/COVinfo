@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
 import NewsStory from "./newsStory";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
@@ -26,9 +25,9 @@ function News(props) {
   useEffect(() => {
     if (props.authed !== authed) {
       setAuthed(props.authed);
-      setLocal({ ...local, loading: true });
+      getLocalNews();
     }
-  }, [props.authed]);
+  }, [props.authed, authed]);
 
   let handleGetNews = (term) => {
     return new Promise((res, rej) => {
@@ -58,12 +57,18 @@ function News(props) {
               country: usr.country,
             });
           })
-          .catch((e) =>
+          .catch((e) => {
             addToast(e, {
               appearance: "error",
               autoDismiss: true,
-            })
-          );
+            });
+            setLocal({
+              articles: [],
+              loading: false,
+              title: `Local Coronavirus News (${usr.country})`,
+              country: usr.country,
+            });
+          });
       } else {
         handleGetNews("United States of America")
           .then((articles) => {
@@ -74,12 +79,18 @@ function News(props) {
               country: "US",
             });
           })
-          .catch((e) =>
+          .catch((e) => {
             addToast(e, {
               appearance: "error",
               autoDismiss: true,
-            })
-          );
+            });
+            setLocal({
+              articles: [],
+              loading: false,
+              title: `Local Coronavirus News (US)`,
+              country: "US",
+            });
+          });
       }
     } else {
       handleGetNews("United States of America")
@@ -91,12 +102,18 @@ function News(props) {
             country: "US",
           });
         })
-        .catch((e) =>
+        .catch((e) => {
           addToast(e, {
             appearance: "error",
             autoDismiss: true,
-          })
-        );
+          });
+          setLocal({
+            articles: [],
+            loading: false,
+            title: `Local Coronavirus News (US)`,
+            country: "US",
+          });
+        });
     }
   };
 
