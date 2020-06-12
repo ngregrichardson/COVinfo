@@ -57,21 +57,39 @@ function News(props) {
   let getLocalNews = () => {
     if (authed && props.user) {
       let usr = props.user;
-      handleGetNews(usr.country)
-        .then((articles) => {
-          setLocal({
-            articles,
-            loading: false,
-            title: `Local Coronavirus News (${usr.country})`,
-            country: usr.country,
-          });
-        })
-        .catch((e) =>
-          addToast(e, {
-            appearance: "error",
-            autoDismiss: true,
+      if (usr.country) {
+        handleGetNews(usr.country)
+          .then((articles) => {
+            setLocal({
+              articles,
+              loading: false,
+              title: `Local Coronavirus News (${usr.country})`,
+              country: usr.country,
+            });
           })
-        );
+          .catch((e) =>
+            addToast(e, {
+              appearance: "error",
+              autoDismiss: true,
+            })
+          );
+      } else {
+        handleGetNews("United States of America")
+          .then((articles) => {
+            setLocal({
+              articles,
+              loading: false,
+              title: `Local Coronavirus News (US)`,
+              country: "US",
+            });
+          })
+          .catch((e) =>
+            addToast(e, {
+              appearance: "error",
+              autoDismiss: true,
+            })
+          );
+      }
     } else {
       handleGetNews("United States of America")
         .then((articles) => {
