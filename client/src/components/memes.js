@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import moment from "moment";
 import {
   ThumbsUp,
@@ -337,7 +337,11 @@ function Memes(props) {
         </Modal.Footer>
       </Modal>
       <h3
-        className={isSmallDevice ? "align-self-center px-3 pt-3" : "px-3 pt-3"}
+        className={
+          isSmallDevice
+            ? "align-self-center px-3 pt-3 text-center"
+            : "px-3 pt-3"
+        }
       >
         Coronavirus Memes
       </h3>
@@ -382,13 +386,17 @@ function Memes(props) {
           <Logo color={"lime"} size={100} className="spinning-logo" />
         </div>
       ) : (
-        <div className="flex p-3">
+        <div className={isSmallDevice ? "flex" : "flex p-3"}>
           <Scrollbars
             hideTracksWhenNotNeeded
             renderView={(props) => <div {...props} />}
           >
             <Masonry
-              className="pr-3 pb-5 d-flex w-100"
+              className={
+                isSmallDevice
+                  ? "pr-2 pb-5 d-flex w-100"
+                  : "pr-3 pb-5 d-flex w-100"
+              }
               breakpointCols={{ default: 4, 1224: 3, 900: 2, 700: 1 }}
               columnClassName="align-items-center mx-1"
             >

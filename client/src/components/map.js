@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ReactMapGl, { Source, Layer } from "react-map-gl";
 import { connect } from "react-redux";
 import ReactCountryFlag from "react-country-flag";
@@ -110,41 +110,49 @@ function Map(props) {
     ) : null;
   };
 
-  useEffect(() => {
-    document.title = "Map | COVinfo";
+  let getInitialMapData = useCallback(() => {
     fetch("https://covinfo.tech/mapData")
       .then((response) => response.json())
       .then(({ geoJson, coronaJson }) => {
-        coronaJson.forEach((country) => {
-          let currFeature = geoJson.features.find(
-            (feature) => feature.properties.ISO_A3 === country.countryInfo.iso3
-          );
-          if (currFeature) {
-            currFeature.properties = {
-              ...currFeature.properties,
-              cases: country.cases,
-              deaths: country.deaths,
-              recovered: country.recovered,
-              casesToday: country.todayCases,
-              tests: country.tests,
-              iso2: country.countryInfo.iso2,
-            };
-            if (props.authed && props.user) {
-              if (
-                props.user.country === country.countryInfo.iso2 ||
-                props.user.country === country.countryInfo.iso3
-              ) {
-                setViewport({
-                  ...viewport,
-                  latitude: country.countryInfo.lat,
-                  longitude: country.countryInfo.long,
-                });
+        if (!coronaJson.message) {
+          coronaJson.forEach((country) => {
+            let currFeature = geoJson.features.find(
+              (feature) =>
+                feature.properties.ISO_A3 === country.countryInfo.iso3
+            );
+            if (currFeature) {
+              currFeature.properties = {
+                ...currFeature.properties,
+                cases: country.cases,
+                deaths: country.deaths,
+                recovered: country.recovered,
+                casesToday: country.todayCases,
+                tests: country.tests,
+                iso2: country.countryInfo.iso2,
+              };
+              if (props.authed && props.user) {
+                if (
+                  props.user.country === country.countryInfo.iso2 ||
+                  props.user.country === country.countryInfo.iso3
+                ) {
+                  setViewport({
+                    ...viewport,
+                    latitude: country.countryInfo.lat,
+                    longitude: country.countryInfo.long,
+                  });
+                }
               }
             }
-          }
-        });
-        setGeoData(geoJson);
-        setTimeout(() => setLoading(false), 1000);
+          });
+          setGeoData(geoJson);
+          setTimeout(() => setLoading(false), 1000);
+        } else {
+          setLoading(false);
+          addToast("There was a problem loading the data", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+        }
       })
       .catch((e) => {
         console.log(e);
@@ -154,7 +162,12 @@ function Map(props) {
           autoDismiss: true,
         });
       });
-  }, []);
+  }, [addToast, props.authed, props.user]);
+
+  useEffect(() => {
+    document.title = "Map | COVinfo";
+    getInitialMapData();
+  }, [getInitialMapData]);
 
   return (
     <div style={{ flex: 1, position: "relative" }}>

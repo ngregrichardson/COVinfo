@@ -67,7 +67,7 @@ function Chat(props) {
   return (
     <div className="w-100 h-100 d-flex flex-column">
       <div className="flex pl-3 pt-3 pr-3 d-flex flex-column">
-        <h3 className={isSmallDevice ? "align-self-center" : ""}>
+        <h3 className={isSmallDevice ? "align-self-center text-center" : ""}>
           Quarantine Chat
         </h3>
         <Scrollbars

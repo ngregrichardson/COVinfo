@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { Facebook, GitHub } from "react-feather";
 import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
+import { useMediaQuery } from "react-responsive";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
   const history = useHistory();
   const { addToast } = useToasts();
 
@@ -78,10 +82,23 @@ function Login() {
   };
 
   return (
-    <div className="w-100 h-100 d-flex align-items-center justify-content-center offWhiteBackground">
-      <div className="bg-white d-flex flex-column align-items-center form-padding rounded boxShadow">
+    <div className="w-100 h-100 d-flex align-items-center justify-content-center offWhiteBackground overflow-auto">
+      <div
+        className={
+          isSmallDevice
+            ? "bg-white d-flex flex-column align-items-center rounded"
+            : "bg-white d-flex flex-column align-items-center form-padding rounded boxShadow"
+        }
+      >
         <h3>Log in</h3>
-        <div style={{ height: 1, width: "25%", backgroundColor: "gray" }} />
+        <div
+          style={{
+            height: 1,
+            width: "25%",
+            backgroundColor: "gray",
+            marginBottom: 15,
+          }}
+        />
         <div className="d-flex flex-row align-items-center justify-content-center p-3">
           <button
             className="smLoginButton bg-white rounded-circle p-2 d-flex align-items-center justify-content-center mx-2"

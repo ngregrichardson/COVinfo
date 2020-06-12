@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 app.get("/mapData", (req, res) => {
   Promise.all([
     fetch("https://datahub.io/core/geo-countries/r/countries.geojson"),
-    fetch("https://corona.lmao.ninja/countries"),
+    fetch("https://corona.lmao.ninja/v2/countries"),
   ])
     .then((values) => {
       Promise.all([values[0].json(), values[1].json()]).then((results) =>

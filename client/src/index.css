@@ -192,3 +192,21 @@ code {
 .navbarZIndex {
   z-index: 45 !important;
 }
+
+.inner-body {
+  flex-direction: row;
+}
+
+@media only screen and (max-device-width: 1024px) {
+  .inner-body {
+    flex-direction: column;
+  }
+}
+
+.tab-content {
+  flex: 1;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

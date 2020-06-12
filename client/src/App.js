@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./components/navbar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Map from "./components/map";
@@ -18,6 +18,7 @@ function App() {
   const isSmallDevice = useMediaQuery({
     query: "(max-device-width: 1024px)",
   });
+
   return (
     <Provider store={rootStore}>
       <ToastProvider
@@ -25,7 +26,7 @@ function App() {
         placement={isSmallDevice ? "bottom-center" : "top-right"}
       >
         <Router>
-          <div className="d-flex flex-row h-100">
+          <div className="d-flex inner-body h-100">
             <Navbar />
             <Switch>
               <Route path="/map">

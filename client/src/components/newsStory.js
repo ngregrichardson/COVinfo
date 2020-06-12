@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import moment from "moment";
+import { useMediaQuery } from "react-responsive";
 
 function NewsStory(props) {
   const [article] = useState(props.article);
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
 
   let openArticleLink = () => {
     window.open(article.url, "_blank");
@@ -25,11 +29,18 @@ function NewsStory(props) {
         alt={"article_img"}
       />
       <div className="d-flex flex-column justify-content-center ml-3">
-        <h5 className="mb-0 text-dark">{article.title}</h5>
-        <span className="ml-2 h6 text-black-50">
+        <h5 className={isSmallDevice ? "mb-0 text-dark h6" : "mb-0 text-dark"}>
+          {article.title}
+        </h5>
+        <span
+          className="pl-2 h6 text-black-50"
+          style={{ overflowWrap: "anywhere" }}
+        >
           {article.source.name} ·
-          {article.author && article.author.trim() !== ""
-            ? ` ${article.author} · `
+          {!isSmallDevice
+            ? article.author && article.author.trim() !== ""
+              ? ` ${article.author} · `
+              : " "
             : " "}
           {moment(article.publishedAt).fromNow()}
         </span>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { getData } from "country-list";
 import { connect } from "react-redux";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { TwitterPicker } from "react-color";
 import { LogOut } from "react-feather";
 import { useHistory } from "react-router-dom";

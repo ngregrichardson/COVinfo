@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { Facebook, GitHub } from "react-feather";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { getData } from "country-list";
 import { useToasts } from "react-toast-notifications";
+import { useMediaQuery } from "react-responsive";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,9 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState("");
   const [country, setCountry] = useState("US");
+  const isSmallDevice = useMediaQuery({
+    query: "(max-device-width: 1024px)",
+  });
   const countries = getData();
   const { addToast } = useToasts();
 
@@ -132,19 +136,35 @@ function Register() {
   };
 
   return (
-    <div className="w-100 h-100 d-flex align-items-center justify-content-center offWhiteBackground">
-      <div className="bg-white d-flex flex-column align-items-center p-5 rounded boxShadow">
+    <div
+      className={
+        isSmallDevice
+          ? "w-100 h-100 d-flex justify-content-center offWhiteBackground overflow-auto"
+          : "w-100 h-100 d-flex justify-content-center align-items-center offWhiteBackground overflow-auto"
+      }
+    >
+      <div
+        className={
+          isSmallDevice
+            ? "bg-white d-flex flex-column form-padding align-items-center rounded px-3"
+            : "bg-white d-flex flex-column form-padding align-items-center rounded boxShadow"
+        }
+      >
         <h3>Register</h3>
         <div
           style={{
             height: 1,
-            width: "15%",
+            width: "25%",
             backgroundColor: "gray",
             marginBottom: 15,
           }}
         />
         <Tabs defaultActiveKey="email" id={"registerTabs"}>
-          <Tab eventKey="email" title="Email" className="mt-2">
+          <Tab
+            eventKey="email"
+            title="Email"
+            className={isSmallDevice ? "mt-2 mb-4" : "mt-2"}
+          >
             <div className="d-flex flex-column align-items-center">
               <Form>
                 <Form.Group controlId="emailUsername">

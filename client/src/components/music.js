@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import searchYoutube from "../utils/youtubeHandler";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import moment from "moment";
 import ReactPlayer from "react-player";
 import {
@@ -305,7 +305,7 @@ function Music(props) {
         </Modal.Footer>
       </Modal>
       <div className="w-100 px-3 mt-3 d-flex flex-column">
-        <h3 className={isSmallDevice ? "align-self-center" : ""}>
+        <h3 className={isSmallDevice ? "align-self-center text-center" : ""}>
           Hand Washing Music
         </h3>
         <div className="w-100 d-flex flex-row rounded-pill messageInputContainer">
@@ -343,7 +343,7 @@ function Music(props) {
           <Logo color={"lime"} size={100} className="spinning-logo" />
         </div>
       ) : (
-        <div className="h-100 p-3">
+        <div className={isSmallDevice ? "h-100" : "h-100 p-3"}>
           <Dropdown className="mb-3 d-flex justify-content-end">
             <Dropdown.Toggle variant="light">
               Filter <Filter />
@@ -376,7 +376,14 @@ function Music(props) {
           <Scrollbars
             hideTracksWhenNotNeeded
             renderView={(props) => (
-              <div {...props} style={{ ...props.style, marginBottom: 50 }} />
+              <div
+                {...props}
+                style={{
+                  ...props.style,
+                  marginBottom: 50,
+                  paddingRight: 8,
+                }}
+              />
             )}
           >
             {songs.map((song) => (
