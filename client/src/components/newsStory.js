@@ -23,9 +23,7 @@ function NewsStory(props) {
           article.urlToImage ||
           "https://designshack.net/wp-content/uploads/placeholder-image.png"
         }
-        width={70}
-        height={70}
-        style={{ borderRadius: 5, objectFit: "cover" }}
+        style={{ borderRadius: 5, objectFit: "cover", width: 70, height: 70 }}
         alt={"article_img"}
       />
       <div className="d-flex flex-column justify-content-center ml-3">
