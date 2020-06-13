@@ -1,4 +1,4 @@
-# COVinfo ![Build](https://github.com/ngregrichardson/COVinfo/workflows/Build/badge.svg)
+# [COVinfo](https://covinfo.tech/) ![Build](https://github.com/ngregrichardson/COVinfo/workflows/Build/badge.svg)
 
 Your own personal COVID-19 dashboard.
 
