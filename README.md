@@ -10,8 +10,3 @@ COVinfo has six main pages. The News page has two sections: global news and loca
 
 ## What it's made of
 The front-end of COVinfo is built with vanilla React.js and Bootstrap for UI design. We used Firebase for the authentication and database, with an Express server and sockets to send live messages to everyone in the Quarantine chat.
-
-## What's next for COVinfo
-- [ ] `About COVID-19` page
-- [ ] `How To Help` page
-- [ ] Add full testing with Jest
