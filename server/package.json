@@ -13,7 +13,7 @@
     "http": "^0.0.1-security",
     "moment": "^2.26.0",
     "morgan": "~1.9.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "nodemon": "^2.0.2",
     "socket.io": "^2.3.0"
   }
